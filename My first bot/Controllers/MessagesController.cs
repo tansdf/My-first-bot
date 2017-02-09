@@ -17,11 +17,12 @@ namespace My_first_bot
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
+        
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
-        {
+        {           
+            ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
             if (activity.Type == ActivityTypes.Message)
-            {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            { 
                 // calculate something for us to return
                 int length = (activity.Text ?? string.Empty).Length;
 
@@ -65,5 +66,20 @@ namespace My_first_bot
 
             return null;
         }
+        /*public async Task<Message> Post([FromBody]Message message)
+        {
+            if (message.Type == "Message")
+            {
+                var reply =
+                    message.Text.ToLower() == "hello" ?
+                        "Hello!" :
+                        "I do not understand you!";
+                return message.CreateReplyMessage(reply);
+            }
+            else
+            {
+                return HandleSystemMessage(message);
+            }
+        }*/
     }
 }
